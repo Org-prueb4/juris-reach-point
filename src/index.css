@@ -9,32 +9,50 @@ All colors MUST be HSL.
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 210 11% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 210 11% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 210 11% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Navy blue - authority and trust */
+    --primary: 210 88% 18%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Light sophisticated background */
+    --secondary: 210 15% 97%;
+    --secondary-foreground: 210 11% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 15% 95%;
+    --muted-foreground: 210 6% 46%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Gold accent - prestige */
+    --accent: 43 96% 56%;
+    --accent-foreground: 210 11% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 210 20% 90%;
+    --input: 210 20% 95%;
+    --ring: 210 88% 18%;
+
+    /* Legal theme specific colors */
+    --legal-gold: 43 96% 56%;
+    --legal-navy: 210 88% 18%;
+    --legal-navy-light: 210 60% 30%;
+    --legal-gray: 210 6% 46%;
+    --legal-gray-light: 210 15% 95%;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(210 88% 18%), hsl(210 60% 30%));
+    --gradient-gold: linear-gradient(135deg, hsl(43 96% 56%), hsl(43 70% 50%));
+
+    /* Shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(210 88% 18% / 0.15);
+    --shadow-card: 0 4px 20px -4px hsl(210 88% 18% / 0.1);
 
     --radius: 0.5rem;
 
