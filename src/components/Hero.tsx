@@ -3,10 +3,12 @@ import { Shield, Award, Users } from "lucide-react";
 import heroImage from "@/assets/hero-legal.jpg";
 import { useWhatsApp } from "@/hooks/use-whatsapp";
 import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
+import { useExperienceYears } from "@/hooks/use-experience-years";
 
 const Hero = () => {
   const { openWhatsApp } = useWhatsApp();
   const { scrollToSection } = useSmoothScroll();
+  const yearsOfExperience = useExperienceYears();
   
   return (
     <section id="inicio" className="relative min-h-screen flex items-center">
@@ -26,7 +28,7 @@ const Hero = () => {
           <div className="text-white">
             <div className="inline-flex items-center gap-2 bg-legal-gold/20 text-legal-gold px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Award className="h-4 w-4" />
-              <span>+15 años de experiencia</span>
+              <span>+{yearsOfExperience} años de experiencia</span>
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
@@ -60,7 +62,7 @@ const Hero = () => {
                 <div className="text-sm text-gray-300">Casos Exitosos</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-legal-gold mb-2">15+</div>
+                <div className="text-3xl font-bold text-legal-gold mb-2">{yearsOfExperience}+</div>
                 <div className="text-sm text-gray-300">Años Experiencia</div>
               </div>
               <div className="text-center">

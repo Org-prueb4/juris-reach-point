@@ -1,6 +1,15 @@
 import { Scale, Phone, Mail, MapPin, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { useExperienceYears } from "@/hooks/use-experience-years";
+import { useState } from "react";
+import CookiesPolicy from "./CookiesPolicy";
+import TermsOfService from "./TermsOfService";
+import PrivacyPolicy from "./PrivacyPolicy";
 
 const Footer = () => {
+  const yearsOfExperience = useExperienceYears();
+  const [isCookiesModalOpen, setIsCookiesModalOpen] = useState(false);
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const services = [
     "Derecho Corporativo",
     "Derecho Laboral", 
@@ -14,9 +23,7 @@ const Footer = () => {
     { name: "Inicio", href: "#inicio" },
     { name: "Servicios", href: "#servicios" },
     { name: "Nosotros", href: "#nosotros" },
-    { name: "Contacto", href: "#contacto" },
-    { name: "Blog Legal", href: "#" },
-    { name: "Casos de Éxito", href: "#" }
+    { name: "Contacto", href: "#contacto" }
   ];
 
   const socialLinks = [
@@ -43,7 +50,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
-              Tu socio legal de confianza con más de 15 años de experiencia 
+              Tu socio legal de confianza con más de {yearsOfExperience} años de experiencia 
               brindando soluciones jurídicas integrales y personalizadas.
             </p>
             <div className="flex gap-4">
@@ -142,19 +149,42 @@ const Footer = () => {
               © 2024 LegalConsult. Todos los derechos reservados.
             </div>
             <div className="flex gap-6 text-sm">
-              <a href="#" className="text-gray-300 hover:text-legal-gold transition-colors">
+              <button 
+                onClick={() => setIsPrivacyModalOpen(true)}
+                className="text-gray-300 hover:text-legal-gold transition-colors"
+              >
                 Política de Privacidad
-              </a>
-              <a href="#" className="text-gray-300 hover:text-legal-gold transition-colors">
+              </button>
+              <button 
+                onClick={() => setIsTermsModalOpen(true)}
+                className="text-gray-300 hover:text-legal-gold transition-colors"
+              >
                 Términos de Servicio
-              </a>
-              <a href="#" className="text-gray-300 hover:text-legal-gold transition-colors">
-                Cookies
-              </a>
+              </button>
+              <button 
+                onClick={() => setIsCookiesModalOpen(true)}
+                className="text-gray-300 hover:text-legal-gold transition-colors"
+              >
+                Política de Cookies
+              </button>
             </div>
           </div>
         </div>
       </div>
+      
+      {/* Modals */}
+      <CookiesPolicy 
+        isOpen={isCookiesModalOpen} 
+        onClose={() => setIsCookiesModalOpen(false)} 
+      />
+      <TermsOfService 
+        isOpen={isTermsModalOpen} 
+        onClose={() => setIsTermsModalOpen(false)} 
+      />
+      <PrivacyPolicy 
+        isOpen={isPrivacyModalOpen} 
+        onClose={() => setIsPrivacyModalOpen(false)} 
+      />
     </footer>
   );
 };
