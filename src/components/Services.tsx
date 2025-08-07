@@ -9,8 +9,16 @@ import {
   BookOpen,
   ArrowRight
 } from "lucide-react";
+import { useWhatsApp } from "@/hooks/use-whatsapp";
+import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
+import { useState } from "react";
+import InfoModal from "./InfoModal";
 
 const Services = () => {
+  const { openWhatsApp } = useWhatsApp();
+  const { scrollToSection } = useSmoothScroll();
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<string>('');
   const services = [
     {
       icon: Building2,
@@ -52,7 +60,7 @@ const Services = () => {
 
   return (
     <section id="servicios" className="py-20 bg-secondary">
-      <div className="container mx-auto px-4">
+             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-legal-gold/10 text-legal-gold px-4 py-2 rounded-full text-sm font-medium mb-4">
@@ -97,6 +105,10 @@ const Services = () => {
                 <Button 
                   variant="outline" 
                   className="w-full group-hover:bg-legal-navy group-hover:text-white group-hover:border-legal-navy"
+                  onClick={() => {
+                    setSelectedService(service.title);
+                    setIsInfoModalOpen(true);
+                  }}
                 >
                   Más información
                   <ArrowRight className="h-4 w-4 ml-2" />
@@ -116,19 +128,27 @@ const Services = () => {
             Agenda una consulta gratuita y conoce cómo podemos resolver tu situación legal.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="gold" size="lg">
+            <Button variant="gold" size="lg" onClick={() => openWhatsApp()}>
               Consulta Gratuita
             </Button>
             <Button 
               variant="outline" 
               size="lg" 
-              className="border-white text-white hover:bg-white hover:text-legal-navy"
+              className="border-white text-legal-gold bg-legal-gold/20 backdrop-blur-sm hover:bg-legal-gold hover:text-legal-navy font-semibold"
+              onClick={() => scrollToSection('servicios')}
             >
               Ver Todos los Servicios
             </Button>
           </div>
         </div>
       </div>
+      
+      {/* Info Modal */}
+      <InfoModal 
+        isOpen={isInfoModalOpen} 
+        onClose={() => setIsInfoModalOpen(false)} 
+        selectedService={selectedService}
+      />
     </section>
   );
 };

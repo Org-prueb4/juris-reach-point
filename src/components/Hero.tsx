@@ -1,8 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Shield, Award, Users } from "lucide-react";
 import heroImage from "@/assets/hero-legal.jpg";
+import { useWhatsApp } from "@/hooks/use-whatsapp";
+import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
+import { useExperienceYears } from "@/hooks/use-experience-years";
 
 const Hero = () => {
+  const { openWhatsApp } = useWhatsApp();
+  const { scrollToSection } = useSmoothScroll();
+  const yearsOfExperience = useExperienceYears();
+  
   return (
     <section id="inicio" className="relative min-h-screen flex items-center">
       {/* Background Image with Overlay */}
@@ -15,13 +22,13 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-legal-navy/90 via-legal-navy/70 to-legal-navy/50"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10 pt-20">
+             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <div className="text-white">
             <div className="inline-flex items-center gap-2 bg-legal-gold/20 text-legal-gold px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Award className="h-4 w-4" />
-              <span>+15 años de experiencia</span>
+              <span>+{yearsOfExperience} años de experiencia</span>
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
@@ -35,16 +42,17 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Button variant="gold" size="lg" className="text-lg px-8 py-4">
+              <Button variant="gold" size="lg" className="text-lg px-8 py-4" onClick={() => openWhatsApp()}>
                 Consulta Gratuita
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="border-white text-white hover:bg-white hover:text-legal-navy text-lg px-8 py-4"
-              >
-                Nuestros Servicios
-              </Button>
+                             <Button 
+                 variant="outline" 
+                 size="lg" 
+                 className="border-white text-legal-gold bg-legal-gold/20 backdrop-blur-sm hover:bg-legal-gold hover:text-legal-navy text-lg px-8 py-4 font-semibold"
+                 onClick={() => scrollToSection('servicios')}
+               >
+                 Nuestros Servicios
+               </Button>
             </div>
 
             {/* Stats */}
@@ -54,7 +62,7 @@ const Hero = () => {
                 <div className="text-sm text-gray-300">Casos Exitosos</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-legal-gold mb-2">15+</div>
+                <div className="text-3xl font-bold text-legal-gold mb-2">{yearsOfExperience}+</div>
                 <div className="text-sm text-gray-300">Años Experiencia</div>
               </div>
               <div className="text-center">
