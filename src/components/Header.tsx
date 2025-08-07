@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Scale, Phone, Mail } from "lucide-react";
 import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
+import { useWhatsApp } from "@/hooks/use-whatsapp";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollToSection } = useSmoothScroll();
+  const { openWhatsApp } = useWhatsApp();
 
   const navigation = [
     { name: "Inicio", href: "inicio" },
@@ -60,7 +62,7 @@ const Header = () => {
                 {item.name}
               </button>
             ))}
-            <Button variant="hero" size="lg">
+            <Button variant="hero" size="lg" onClick={() => openWhatsApp()}>
               Consulta Gratuita
             </Button>
           </nav>
@@ -89,7 +91,7 @@ const Header = () => {
                   {item.name}
                 </button>
               ))}
-              <Button variant="hero" className="mt-4">
+              <Button variant="hero" className="mt-4" onClick={() => openWhatsApp()}>
                 Consulta Gratuita
               </Button>
             </nav>

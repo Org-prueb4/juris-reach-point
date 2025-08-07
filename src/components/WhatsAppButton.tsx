@@ -1,8 +1,8 @@
 import { MessageCircle, Phone } from "lucide-react";
+import { useWhatsApp } from "@/hooks/use-whatsapp";
 
 const WhatsAppButton = () => {
-  //TODO: Pendiente actualizar numero de whatsapp
-  const phoneNumber = "573001234567"; 
+  const { phoneNumber } = useWhatsApp();
   const message = "Hola, me gustaría hacer una consulta legal."; 
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;

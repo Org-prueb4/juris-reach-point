@@ -9,8 +9,12 @@ import {
   BookOpen,
   ArrowRight
 } from "lucide-react";
+import { useWhatsApp } from "@/hooks/use-whatsapp";
+import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
 
 const Services = () => {
+  const { openWhatsApp } = useWhatsApp();
+  const { scrollToSection } = useSmoothScroll();
   const services = [
     {
       icon: Building2,
@@ -116,13 +120,14 @@ const Services = () => {
             Agenda una consulta gratuita y conoce cómo podemos resolver tu situación legal.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="gold" size="lg">
+            <Button variant="gold" size="lg" onClick={() => openWhatsApp()}>
               Consulta Gratuita
             </Button>
             <Button 
               variant="outline" 
               size="lg" 
-              className="border-white text-white hover:bg-white hover:text-legal-navy"
+              className="border-white text-legal-gold bg-legal-gold/20 backdrop-blur-sm hover:bg-legal-gold hover:text-legal-navy font-semibold"
+              onClick={() => scrollToSection('servicios')}
             >
               Ver Todos los Servicios
             </Button>

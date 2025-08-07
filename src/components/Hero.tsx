@@ -1,8 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Shield, Award, Users } from "lucide-react";
 import heroImage from "@/assets/hero-legal.jpg";
+import { useWhatsApp } from "@/hooks/use-whatsapp";
+import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
 
 const Hero = () => {
+  const { openWhatsApp } = useWhatsApp();
+  const { scrollToSection } = useSmoothScroll();
+  
   return (
     <section id="inicio" className="relative min-h-screen flex items-center">
       {/* Background Image with Overlay */}
@@ -15,7 +20,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-legal-navy/90 via-legal-navy/70 to-legal-navy/50"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10 pt-20">
+             <div className="container mx-auto px-4 relative z-10 pt-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <div className="text-white">
@@ -35,16 +40,17 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Button variant="gold" size="lg" className="text-lg px-8 py-4">
+              <Button variant="gold" size="lg" className="text-lg px-8 py-4" onClick={() => openWhatsApp()}>
                 Consulta Gratuita
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="border-white text-white hover:bg-white hover:text-legal-navy text-lg px-8 py-4"
-              >
-                Nuestros Servicios
-              </Button>
+                             <Button 
+                 variant="outline" 
+                 size="lg" 
+                 className="border-white text-legal-gold bg-legal-gold/20 backdrop-blur-sm hover:bg-legal-gold hover:text-legal-navy text-lg px-8 py-4 font-semibold"
+                 onClick={() => scrollToSection('servicios')}
+               >
+                 Nuestros Servicios
+               </Button>
             </div>
 
             {/* Stats */}
