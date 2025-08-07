@@ -1,16 +1,23 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Scale, Phone, Mail } from "lucide-react";
+import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { scrollToSection } = useSmoothScroll();
 
   const navigation = [
-    { name: "Inicio", href: "#inicio" },
-    { name: "Servicios", href: "#servicios" },
-    { name: "Nosotros", href: "#nosotros" },
-    { name: "Contacto", href: "#contacto" },
+    { name: "Inicio", href: "inicio" },
+    { name: "Servicios", href: "servicios" },
+    { name: "Nosotros", href: "nosotros" },
+    { name: "Contacto", href: "contacto" },
   ];
+
+  const handleNavigationClick = (sectionId: string) => {
+    scrollToSection(sectionId);
+    setIsMenuOpen(false); // Close mobile menu after navigation
+  };
 
   return (
     <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm z-50 border-b border-border">
@@ -45,13 +52,13 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             {navigation.map((item) => (
-              <a
+              <button
                 key={item.name}
-                href={item.href}
-                className="text-foreground hover:text-primary transition-colors font-medium"
+                onClick={() => handleNavigationClick(item.href)}
+                className="text-foreground hover:text-primary transition-colors font-medium cursor-pointer"
               >
                 {item.name}
-              </a>
+              </button>
             ))}
             <Button variant="hero" size="lg">
               Consulta Gratuita
@@ -74,14 +81,13 @@ const Header = () => {
           <div className="md:hidden py-4 border-t border-border">
             <nav className="flex flex-col gap-4">
               {navigation.map((item) => (
-                <a
+                <button
                   key={item.name}
-                  href={item.href}
-                  className="text-foreground hover:text-primary transition-colors font-medium py-2"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => handleNavigationClick(item.href)}
+                  className="text-foreground hover:text-primary transition-colors font-medium py-2 text-left cursor-pointer"
                 >
                   {item.name}
-                </a>
+                </button>
               ))}
               <Button variant="hero" className="mt-4">
                 Consulta Gratuita

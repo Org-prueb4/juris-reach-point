@@ -120,4 +120,21 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Smooth scrolling for the entire page */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Ensure proper scroll behavior on all devices */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* Custom scroll behavior for better UX */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
 }
