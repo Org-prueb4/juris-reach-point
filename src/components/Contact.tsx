@@ -3,16 +3,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { 
   Phone, 
   Mail, 
   MapPin, 
   Clock,
   Send,
-  CheckCircle
+  CheckCircle,
+  AlertCircle,
+  CheckCircle2
 } from "lucide-react";
+import { useContactForm } from "@/hooks/use-contact-form";
 
 const Contact = () => {
+  const {
+    formData,
+    isLoading,
+    isSuccess,
+    error,
+    handleInputChange,
+    handleSubmit,
+    resetForm
+  } = useContactForm();
+
   const contactInfo = [
     {
       icon: Phone,
@@ -49,7 +63,7 @@ const Contact = () => {
 
   return (
     <section id="contacto" className="py-20 bg-background">
-             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-legal-gold/10 text-legal-gold px-4 py-2 rounded-full text-sm font-medium mb-4">
@@ -76,60 +90,132 @@ const Contact = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">Nombre *</Label>
-                    <Input id="firstName" placeholder="Tu nombre" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">Apellido *</Label>
-                    <Input id="lastName" placeholder="Tu apellido" required />
-                  </div>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
-                    <Input id="email" type="email" placeholder="tu@email.com" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Teléfono</Label>
-                    <Input id="phone" type="tel" placeholder="+1 (234) 567-8900" />
-                  </div>
-                </div>
+                {/* Success Message */}
+                {isSuccess && (
+                  <Alert className="border-green-200 bg-green-50">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <AlertDescription className="text-green-800">
+                      ¡Gracias por tu consulta! Hemos recibido tu mensaje y nos pondremos en contacto contigo en las próximas 24 horas.
+                    </AlertDescription>
+                  </Alert>
+                )}
 
-                <div className="space-y-2">
-                  <Label htmlFor="subject">Asunto *</Label>
-                  <Input id="subject" placeholder="Tema de tu consulta" required />
-                </div>
+                {/* Error Message */}
+                {error && (
+                  <Alert className="border-red-200 bg-red-50">
+                    <AlertCircle className="h-4 w-4 text-red-600" />
+                    <AlertDescription className="text-red-800">
+                      {error}
+                    </AlertDescription>
+                  </Alert>
+                )}
 
-                <div className="space-y-2">
-                  <Label htmlFor="message">Mensaje *</Label>
-                  <Textarea 
-                    id="message" 
-                    placeholder="Describe tu situación legal..."
-                    className="min-h-[120px]"
-                    required 
-                  />
-                </div>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName">Nombre *</Label>
+                      <Input 
+                        id="firstName" 
+                        placeholder="Tu nombre" 
+                        value={formData.firstName}
+                        onChange={(e) => handleInputChange('firstName', e.target.value)}
+                        required 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName">Apellido *</Label>
+                      <Input 
+                        id="lastName" 
+                        placeholder="Tu apellido" 
+                        value={formData.lastName}
+                        onChange={(e) => handleInputChange('lastName', e.target.value)}
+                        required 
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email *</Label>
+                      <Input 
+                        id="email" 
+                        type="email" 
+                        placeholder="tu@email.com" 
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        required 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Teléfono</Label>
+                      <Input 
+                        id="phone" 
+                        type="tel" 
+                        placeholder="+1 (234) 567-8900" 
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                      />
+                    </div>
+                  </div>
 
-                <div className="flex items-start gap-3">
-                  <input 
-                    type="checkbox" 
-                    id="privacy" 
-                    className="mt-1"
-                    required 
-                  />
-                  <label htmlFor="privacy" className="text-sm text-muted-foreground">
-                    Acepto la <a href="#" className="text-legal-navy hover:underline">política de privacidad</a> y 
-                    autorizo el tratamiento de mis datos personales.
-                  </label>
-                </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="subject">Asunto *</Label>
+                    <Input 
+                      id="subject" 
+                      placeholder="Tema de tu consulta" 
+                      value={formData.subject}
+                      onChange={(e) => handleInputChange('subject', e.target.value)}
+                      required 
+                    />
+                  </div>
 
-                <Button variant="hero" size="lg" className="w-full">
-                  <Send className="h-4 w-4 mr-2" />
-                  Enviar Consulta
-                </Button>
+                  <div className="space-y-2">
+                    <Label htmlFor="message">Mensaje *</Label>
+                    <Textarea 
+                      id="message" 
+                      placeholder="Describe tu situación legal..."
+                      className="min-h-[120px]"
+                      value={formData.message}
+                      onChange={(e) => handleInputChange('message', e.target.value)}
+                      required 
+                    />
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <input 
+                      type="checkbox" 
+                      id="privacy" 
+                      className="mt-1"
+                      checked={formData.privacy}
+                      onChange={(e) => handleInputChange('privacy', e.target.checked)}
+                      required 
+                    />
+                    <label htmlFor="privacy" className="text-sm text-muted-foreground">
+                      Acepto la <a href="#" className="text-legal-navy hover:underline">política de privacidad</a> y 
+                      autorizo el tratamiento de mis datos personales.
+                    </label>
+                  </div>
+
+                  <Button 
+                    type="submit"
+                    variant="hero" 
+                    size="lg" 
+                    className="w-full"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Enviando...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4 mr-2" />
+                        Enviar Consulta
+                      </>
+                    )}
+                  </Button>
+                </form>
               </CardContent>
             </Card>
           </div>
