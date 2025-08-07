@@ -23,7 +23,7 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm z-50 border-b border-border">
-      <div className="container mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top bar */}
         <div className="hidden md:flex justify-end items-center py-2 text-sm text-muted-foreground border-b border-border/50">
           <div className="flex items-center gap-6">
