@@ -11,10 +11,14 @@ import {
 } from "lucide-react";
 import { useWhatsApp } from "@/hooks/use-whatsapp";
 import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
+import { useState } from "react";
+import InfoModal from "./InfoModal";
 
 const Services = () => {
   const { openWhatsApp } = useWhatsApp();
   const { scrollToSection } = useSmoothScroll();
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<string>('');
   const services = [
     {
       icon: Building2,
@@ -101,6 +105,10 @@ const Services = () => {
                 <Button 
                   variant="outline" 
                   className="w-full group-hover:bg-legal-navy group-hover:text-white group-hover:border-legal-navy"
+                  onClick={() => {
+                    setSelectedService(service.title);
+                    setIsInfoModalOpen(true);
+                  }}
                 >
                   Más información
                   <ArrowRight className="h-4 w-4 ml-2" />
@@ -134,6 +142,13 @@ const Services = () => {
           </div>
         </div>
       </div>
+      
+      {/* Info Modal */}
+      <InfoModal 
+        isOpen={isInfoModalOpen} 
+        onClose={() => setIsInfoModalOpen(false)} 
+        selectedService={selectedService}
+      />
     </section>
   );
 };

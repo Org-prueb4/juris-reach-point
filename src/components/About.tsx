@@ -8,8 +8,12 @@ import {
   CheckCircle,
   Star
 } from "lucide-react";
+import { useState } from "react";
+import TeamModal from "./TeamModal";
 
 const About = () => {
+  const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
+  
   const achievements = [
     {
       icon: Award,
@@ -97,11 +101,15 @@ const About = () => {
               </p>
             </div>
             
-            <div className="mt-8">
-              <Button variant="hero" size="lg">
-                Conoce Nuestro Equipo
-              </Button>
-            </div>
+                         <div className="mt-8">
+               <Button 
+                 variant="hero" 
+                 size="lg"
+                 onClick={() => setIsTeamModalOpen(true)}
+               >
+                 Conoce Nuestro Equipo
+               </Button>
+             </div>
           </div>
 
           {/* Achievements Grid */}
@@ -153,10 +161,16 @@ const About = () => {
               </div>
             ))}
           </div>
-        </div>
-      </div>
-    </section>
-  );
-};
+                 </div>
+       </div>
+       
+       {/* Team Modal */}
+       <TeamModal 
+         isOpen={isTeamModalOpen} 
+         onClose={() => setIsTeamModalOpen(false)} 
+       />
+     </section>
+   );
+ };
 
 export default About;
