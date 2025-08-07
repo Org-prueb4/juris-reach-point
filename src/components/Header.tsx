@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Scale, Phone, Mail } from "lucide-react";
 import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
 import { useWhatsApp } from "@/hooks/use-whatsapp";
+import { useActiveSection } from "@/hooks/use-active-section";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollToSection } = useSmoothScroll();
   const { openWhatsApp } = useWhatsApp();
+  const activeSection = useActiveSection();
 
   const navigation = [
     { name: "Inicio", href: "inicio" },
@@ -57,9 +59,16 @@ const Header = () => {
               <button
                 key={item.name}
                 onClick={() => handleNavigationClick(item.href)}
-                className="text-foreground hover:text-primary transition-colors font-medium cursor-pointer"
+                className={`transition-colors font-medium cursor-pointer relative ${
+                  activeSection === item.href
+                    ? 'text-legal-gold font-semibold'
+                    : 'text-foreground hover:text-legal-gold'
+                }`}
               >
                 {item.name}
+                {activeSection === item.href && (
+                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-legal-gold rounded-full"></div>
+                )}
               </button>
             ))}
             <Button variant="hero" size="lg" onClick={() => openWhatsApp()}>
@@ -86,7 +95,11 @@ const Header = () => {
                 <button
                   key={item.name}
                   onClick={() => handleNavigationClick(item.href)}
-                  className="text-foreground hover:text-primary transition-colors font-medium py-2 text-left cursor-pointer"
+                  className={`transition-colors font-medium py-2 text-left cursor-pointer ${
+                    activeSection === item.href
+                      ? 'text-legal-gold font-semibold bg-legal-gold/10 rounded-lg px-3'
+                      : 'text-foreground hover:text-legal-gold'
+                  }`}
                 >
                   {item.name}
                 </button>
