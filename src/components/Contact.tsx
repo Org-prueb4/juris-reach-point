@@ -15,6 +15,7 @@ import {
   CheckCircle2
 } from "lucide-react";
 import { useContactForm } from "@/hooks/use-contact-form";
+import { isFeatureEnabled } from "@/lib/feature-flags";
 
 const Contact = () => {
   const {
@@ -26,6 +27,9 @@ const Contact = () => {
     handleSubmit,
     resetForm
   } = useContactForm();
+
+  // Verificar si el formulario de contacto está habilitado
+  const isContactFormEnabled = isFeatureEnabled('CONTACT_FORM_ENABLED');
 
   const contactInfo = [
     {
@@ -80,182 +84,208 @@ const Contact = () => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-12">
-          {/* Contact Form */}
-          <div className="lg:col-span-2">
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl">Envíanos tu consulta</CardTitle>
-                <CardDescription>
-                  Completa el formulario y nos pondremos en contacto contigo a la brevedad.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Success Message */}
-                {isSuccess && (
-                  <Alert className="border-green-200 bg-green-50">
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <AlertDescription className="text-green-800">
-                      ¡Gracias por tu consulta! Hemos recibido tu mensaje y nos pondremos en contacto contigo en las próximas 24 horas.
-                    </AlertDescription>
-                  </Alert>
-                )}
+          {/* Contact Form - Solo se muestra si el feature flag está habilitado */}
+          {isContactFormEnabled && (
+            <div className="lg:col-span-2">
+              <Card className="border-0 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-2xl">Envíanos tu consulta</CardTitle>
+                  <CardDescription>
+                    Completa el formulario y nos pondremos en contacto contigo a la brevedad.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Success Message */}
+                  {isSuccess && (
+                    <Alert className="border-green-200 bg-green-50">
+                      <CheckCircle2 className="h-4 w-4 text-green-600" />
+                      <AlertDescription className="text-green-800">
+                        ¡Gracias por tu consulta! Hemos recibido tu mensaje y nos pondremos en contacto contigo en las próximas 24 horas.
+                      </AlertDescription>
+                    </Alert>
+                  )}
 
-                {/* Error Message */}
-                {error && (
-                  <Alert className="border-red-200 bg-red-50">
-                    <AlertCircle className="h-4 w-4 text-red-600" />
-                    <AlertDescription className="text-red-800">
-                      {error}
-                    </AlertDescription>
-                  </Alert>
-                )}
+                  {/* Error Message */}
+                  {error && (
+                    <Alert className="border-red-200 bg-red-50">
+                      <AlertCircle className="h-4 w-4 text-red-600" />
+                      <AlertDescription className="text-red-800">
+                        {error}
+                      </AlertDescription>
+                    </Alert>
+                  )}
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName">Nombre *</Label>
+                        <Input 
+                          id="firstName" 
+                          placeholder="Tu nombre" 
+                          value={formData.firstName}
+                          onChange={(e) => handleInputChange('firstName', e.target.value)}
+                          required 
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName">Apellido *</Label>
+                        <Input 
+                          id="lastName" 
+                          placeholder="Tu apellido" 
+                          value={formData.lastName}
+                          onChange={(e) => handleInputChange('lastName', e.target.value)}
+                          required 
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email *</Label>
+                        <Input 
+                          id="email" 
+                          type="email" 
+                          placeholder="tu@email.com" 
+                          value={formData.email}
+                          onChange={(e) => handleInputChange('email', e.target.value)}
+                          required 
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="phone">Teléfono</Label>
+                        <Input 
+                          id="phone" 
+                          type="tel" 
+                          placeholder="+1 (234) 567-8900" 
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange('phone', e.target.value)}
+                        />
+                      </div>
+                    </div>
+
                     <div className="space-y-2">
-                      <Label htmlFor="firstName">Nombre *</Label>
+                      <Label htmlFor="subject">Asunto *</Label>
                       <Input 
-                        id="firstName" 
-                        placeholder="Tu nombre" 
-                        value={formData.firstName}
-                        onChange={(e) => handleInputChange('firstName', e.target.value)}
+                        id="subject" 
+                        placeholder="Tema de tu consulta" 
+                        value={formData.subject}
+                        onChange={(e) => handleInputChange('subject', e.target.value)}
                         required 
                       />
                     </div>
+
                     <div className="space-y-2">
-                      <Label htmlFor="lastName">Apellido *</Label>
-                      <Input 
-                        id="lastName" 
-                        placeholder="Tu apellido" 
-                        value={formData.lastName}
-                        onChange={(e) => handleInputChange('lastName', e.target.value)}
+                      <Label htmlFor="message">Mensaje *</Label>
+                      <Textarea 
+                        id="message" 
+                        placeholder="Describe tu situación legal..."
+                        className="min-h-[120px]"
+                        value={formData.message}
+                        onChange={(e) => handleInputChange('message', e.target.value)}
                         required 
                       />
                     </div>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email *</Label>
-                      <Input 
-                        id="email" 
-                        type="email" 
-                        placeholder="tu@email.com" 
-                        value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
+
+                    <div className="flex items-start gap-3">
+                      <input 
+                        type="checkbox" 
+                        id="privacy" 
+                        className="mt-1"
+                        checked={formData.privacy}
+                        onChange={(e) => handleInputChange('privacy', e.target.checked)}
                         required 
                       />
+                      <label htmlFor="privacy" className="text-sm text-muted-foreground">
+                        Acepto la <a href="#" className="text-legal-navy hover:underline">política de privacidad</a> y 
+                        autorizo el tratamiento de mis datos personales.
+                      </label>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Teléfono</Label>
-                      <Input 
-                        id="phone" 
-                        type="tel" 
-                        placeholder="+1 (234) 567-8900" 
-                        value={formData.phone}
-                        onChange={(e) => handleInputChange('phone', e.target.value)}
-                      />
-                    </div>
-                  </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="subject">Asunto *</Label>
-                    <Input 
-                      id="subject" 
-                      placeholder="Tema de tu consulta" 
-                      value={formData.subject}
-                      onChange={(e) => handleInputChange('subject', e.target.value)}
-                      required 
-                    />
-                  </div>
+                    <Button 
+                      type="submit"
+                      variant="hero" 
+                      size="lg" 
+                      className="w-full"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          Enviando...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="h-4 w-4 mr-2" />
+                          Enviar Consulta
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Mensaje *</Label>
-                    <Textarea 
-                      id="message" 
-                      placeholder="Describe tu situación legal..."
-                      className="min-h-[120px]"
-                      value={formData.message}
-                      onChange={(e) => handleInputChange('message', e.target.value)}
-                      required 
-                    />
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <input 
-                      type="checkbox" 
-                      id="privacy" 
-                      className="mt-1"
-                      checked={formData.privacy}
-                      onChange={(e) => handleInputChange('privacy', e.target.checked)}
-                      required 
-                    />
-                    <label htmlFor="privacy" className="text-sm text-muted-foreground">
-                      Acepto la <a href="#" className="text-legal-navy hover:underline">política de privacidad</a> y 
-                      autorizo el tratamiento de mis datos personales.
-                    </label>
-                  </div>
-
-                  <Button 
-                    type="submit"
-                    variant="hero" 
-                    size="lg" 
-                    className="w-full"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                        Enviando...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="h-4 w-4 mr-2" />
-                        Enviar Consulta
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Contact Information */}
-          <div className="space-y-6">
+          {/* Contact Information - Siempre visible */}
+          <div className={`space-y-6 ${!isContactFormEnabled ? 'lg:col-span-3 max-w-4xl mx-auto' : ''}`}>
             {/* Contact Details */}
             <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle>Información de Contacto</CardTitle>
+              <CardHeader className={`${!isContactFormEnabled ? 'text-center' : ''}`}>
+                <div className={`flex items-center gap-3 ${!isContactFormEnabled ? 'justify-center' : ''}`}>
+                  <div className="p-2 bg-legal-navy/10 rounded-lg">
+                    <Phone className="h-5 w-5 text-legal-navy" />
+                  </div>
+                  <CardTitle className="text-xl font-bold text-legal-navy">
+                    Información de Contacto
+                  </CardTitle>
+                </div>
+                <p className={`text-muted-foreground text-sm mt-2 ${!isContactFormEnabled ? 'text-center' : ''}`}>
+                  Contáctanos directamente a través de cualquiera de estos medios
+                </p>
               </CardHeader>
               <CardContent className="space-y-6">
-                {contactInfo.map((info, index) => (
-                  <div key={index} className="flex items-start gap-4">
-                    <div className="p-2 bg-legal-navy/10 rounded-lg">
-                      <info.icon className="h-5 w-5 text-legal-navy" />
+                <div className={`grid ${!isContactFormEnabled ? 'md:grid-cols-2 lg:grid-cols-4 gap-6' : 'space-y-6'}`}>
+                  {contactInfo.map((info, index) => (
+                    <div key={index} className={`flex items-start gap-4 ${!isContactFormEnabled ? 'flex-col text-center' : ''}`}>
+                      <div className={`p-2 bg-legal-navy/10 rounded-lg ${!isContactFormEnabled ? 'mx-auto' : ''}`}>
+                        <info.icon className="h-5 w-5 text-legal-navy" />
+                      </div>
+                      <div className={`${!isContactFormEnabled ? 'text-center w-full' : ''}`}>
+                        <h4 className={`font-semibold text-foreground mb-1 ${!isContactFormEnabled ? 'text-center' : ''}`}>{info.title}</h4>
+                        <div className={`${!isContactFormEnabled ? 'text-center' : ''}`}>
+                          {info.details.map((detail, detailIndex) => (
+                            <p key={detailIndex} className={`text-muted-foreground text-sm ${!isContactFormEnabled ? 'text-center' : ''}`}>
+                              {info.action ? (
+                                <a href={info.action} className="hover:text-legal-navy transition-colors">
+                                  {detail}
+                                </a>
+                              ) : (
+                                detail
+                              )}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-1">{info.title}</h4>
-                      {info.details.map((detail, detailIndex) => (
-                        <p key={detailIndex} className="text-muted-foreground text-sm">
-                          {info.action ? (
-                            <a href={info.action} className="hover:text-legal-navy transition-colors">
-                              {detail}
-                            </a>
-                          ) : (
-                            detail
-                          )}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </CardContent>
             </Card>
 
             {/* Benefits */}
             <Card className="border-0 shadow-lg bg-gradient-to-br from-legal-navy to-legal-navy-light text-white">
-              <CardHeader>
-                <CardTitle>¿Por qué contactarnos?</CardTitle>
+              <CardHeader className={`${!isContactFormEnabled ? 'text-center' : ''}`}>
+                <div className={`flex items-center gap-3 ${!isContactFormEnabled ? 'justify-center' : ''}`}>
+                  <div className="p-2 bg-white/10 rounded-lg">
+                    <CheckCircle className="h-5 w-5 text-legal-gold" />
+                  </div>
+                  <CardTitle className="text-xl font-bold text-white">
+                    ¿Por qué contactarnos?
+                  </CardTitle>
+                </div>
+                <p className={`text-gray-200 text-sm mt-2 ${!isContactFormEnabled ? 'text-center' : ''}`}>
+                  Descubre las ventajas de trabajar con nuestro equipo legal
+                </p>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
